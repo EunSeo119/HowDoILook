@@ -47,73 +47,12 @@
 <br><br>
 
 ## 🧑‍🤝‍🧑 멤버구성
-<table style="text-align: center;">
-  <tr>
-    <th>신산하</th>
-    <th>박세윤</th>
-    <th>손정민</th>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/SahhaShin"><img src="https://avatars.githubusercontent.com/u/33896511?v=4" alt="신산하 사진"></a></td>
-    <td><a href="https://github.com/ParkSeYun98"><img src="https://avatars.githubusercontent.com/u/81186461?v=4" alt="박세윤 사진"></a></td>
-    <td><a href="https://github.com/jungmin0049"><img src="https://avatars.githubusercontent.com/u/74610027?v=4" alt="손정민 사진"></a></td>
-  </tr>
-  <tr>
-    <td>Team Leader / Front</td>
-    <td>Back / Infra / Front</td>
-    <td>Front</td>
-  </tr>
-  <tr>
-    <td>
-    - 프로토타입 제작 및 디자인 (Figma)<br>
-    - 컴포넌트 구성 및 API 기능 적용 (Live/Feed/Mypage/옷장/채팅/랭킹)<br>
-    - 웹 소켓 통신을 이용한 채팅(1:1 / M:N) / 방입장 / 방퇴장 / 블랙리스트 구현<br>
-    - 기상청 API를 활용한 OOTD 서비스 제작<br>
-    </td>
-    <td>
-    - (Infra) Docker를 활용한 프로젝트 수동 배포<br>
-    - (Back) Spring Security를 활용한 인증 / 인가 (JWT 토큰 방식)<br>
-    - (Back) Redis를 활용한 실시간 Ranking 서비스<br>
-    - (Back) Scheduler를 활용하여 일정 주기별 특정 서비스 제공<br>
-    - (Back) User, Ranking, Badge 기반 Backend API<br>
-    - (Front) 마이페이지, 랭킹 페이지 구현<br>
-    - (Front) 팔로우 기반 서비스 구현<br>
-    </td>
-    <td>
-    - 오픈비두 Api를 활용한 화상회의 컴포넌트 구현(카메라, 오디오 설정 포함)<br>
-    - 페이지네이션 구현, 검색 구현(동기화를 이용한 실시간 목록 갱신 방식)<br>
-    - 로그인 컴포넌트 및 API 적용<br>
-    </td>
-  </tr>
-</table>
 
-<table style="text-align: center;">
-  <tr>
-    <th>김은서</th>
-    <th>유태영</th>
-    <th>정형준</th>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/EunSeo119"><img src="https://avatars.githubusercontent.com/u/64001133?v=4" alt="김은서 사진"></a></td>
-    <td><a href="https://github.com/taeyeongryu"><img src="https://avatars.githubusercontent.com/u/122500557?v=4" alt="유태영 사진"></a></td>
-    <td><a href="https://github.com/Brojjun"><img src="https://avatars.githubusercontent.com/u/122707977?v=4" alt="정형준 사진"></a></td>
-  </tr>
-  <tr>
-    <td>Back</td>
-    <td>Back</td>
-    <td>Back</td>
-  </tr>
-  <tr>
-    <td>- 옷장, 스트리밍, 이미지 관련 API<br>
-        - 이미지 배경제거<br>
-        - 프론트 메인페이지</td>
-    <td>- 피드, 댓글, 블랙리스트, 팔로우 API<br>
-        - UCC 총 감독, 주연배우</td>
-    <td>- 웹 소켓 프로토콜 관련 기능<br>
-        - 채팅 API<br>
-        - 발표</td>
-  </tr>
-</table>
+|                                                                    [신산하](https://github.com/SahhaShin)                                                                    |                        [박세윤](https://github.com/ParkSeYun98)                         |                           [손정민](https://github.com/jungmin0049)                           |                           [김은서](https://github.com/EunSeo119)                            |                        [유태영](https://github.com/taeyeongryu)                         |                            [정형준](https://github.com/Brojjun)                            |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/33896511?v=4" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/81186461?v=4" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/74610027?v=4" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/64001133?v=4" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/122500557?v=4" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/122707977?v=4" width="100" height="100"> |
+|                                                                               **Team Leader / Front**                                                                                |                                        **Back / Infra / Front**                                        |                                        **Front**                                        |                                       **Back**                                        |                                      **Back**                                       |                                        **Back**                                         |
+
 
 <br><br>
 
