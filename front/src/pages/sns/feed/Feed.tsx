@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import feedStyle from "./Feed.module.css";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"; 
-import {action_feed, calTotalFeedLikes, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen, changeFeedMode} from "../../../store/FeedSlice";
-import {changeMenuItemNum} from "../../../store/UtilSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { action_feed, calTotalFeedLikes, changeModifyModalOpen, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeDeclarationModalOpen, changeFeedMode } from "../../../store/FeedSlice";
+import { changeMenuItemNum } from "../../../store/UtilSlice";
 import { action_follow } from '../../../store/FollowSlice';
 
 // 컴포넌트
@@ -22,109 +22,109 @@ import FeedFollow from '../../../components/sns/feed/FeedFollow';
 const Feed = () => {
 
     //redux 관리
-    let state = useSelector((state:any)=>state.feed);
-    let state_follow = useSelector((state:any)=>state.follow);
+    let state = useSelector((state: any) => state.feed);
+    let state_follow = useSelector((state: any) => state.follow);
     let dispatch = useDispatch();
     dispatch(changeMenuItemNum(1))
 
     // 등록된 피드 전체 불러오기
     // function getFeedTotalList(state,action){
-        
+
     // }
 
     const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(action_feed.getFeedTotalList(loginUser.id));
-    },[state.feedAddOk, state.likeOk, state.addCommentOk, state.commentList])
+    }, [state.feedAddOk, state.likeOk, state.addCommentOk, state.commentList])
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(calTotalFeedLikes());
-    },[state.feedTotalObj, state.addCommentOk])
+    }, [state.feedTotalObj, state.addCommentOk])
 
-    return(
+    return (
         <>
             {
                 // 피드 상세보기 모달
-                state.detailModalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail feedId={state.detailFeedId}/></div>:null
+                state.detailModalOpen ? <div className={`${feedStyle.detailModal}`}><FeedDetail feedId={state.detailFeedId} /></div> : null
             }
 
             {
                 // 피드 수정 모달
-                state.modifyModalOpen?<div className={`${feedStyle.detailModal}`}><FeedModify/></div>:null
+                state.modifyModalOpen ? <div className={`${feedStyle.detailModal}`}><FeedModify /></div> : null
             }
 
             {
                 // 업로드 모달
-                state.createModalOpen?<div className={`${feedStyle.createModal}`}><FeedCreate/></div>:null
+                state.createModalOpen ? <div className={`${feedStyle.createModal}`}><FeedCreate /></div> : null
             }
             {
                 //신고 모달
-                state.declarationModalOpen?<div className={`${feedStyle.declarationModal}`}><FeedDeclaration/></div>:null
+                state.declarationModalOpen ? <div className={`${feedStyle.declarationModal}`}><FeedDeclaration /></div> : null
             }
             <div className={`${feedStyle.total}`}>
-                <div className={`${feedStyle.header}`}><Header/></div>
-                
+                <div className={`${feedStyle.header}`}><Header /></div>
+
                 <div>
                     {/* 문구 & 해시태그 */}
-                    <IntroArea/>
+                    <IntroArea />
                 </div>
 
 
                 <div className={`${feedStyle.main}`}>
-                    
+
                     {/* main */}
-                    
+
                     <div className={`${feedStyle.menuArea}`}>
                         {/* floating menu start */}
-                        <div><Menu/></div>
+                        <div><Menu /></div>
                     </div>
 
                     {/* 메인 컨텐츠 시작 */}
                     <div className={`${feedStyle.contentArea}`}>
-                        
+
                         <div className={`${feedStyle.uploadBtn}`}>
                             {/* 업로드 버튼 */}
-                            <button onClick={()=>{dispatch(changeCreateModalOpen(true))}}>업로드</button>
+                            <button onClick={() => { dispatch(changeCreateModalOpen(true)) }}>업로드</button>
                         </div>
 
                         <div className={`${feedStyle.title}`}>
                             <div>Feed</div>
                             <div className={`${feedStyle.sortBtn}`}>
-                                <button onClick={async()=>{
+                                <button onClick={async () => {
                                     dispatch(changeSortType(1))
                                     dispatch(changeFeedMode(1));
-                                    }} style={state.sortType===1?{backgroundColor:"#EAA595", color:"white"}:null}>ALL</button>
-                                <button onClick={async()=>{
+                                }} style={state.sortType === 1 ? { backgroundColor: "#EAA595", color: "white" } : null}>ALL</button>
+                                <button onClick={async () => {
                                     dispatch(changeSortType(2))
                                     dispatch(changeFeedMode(2));
-                                    }} style={state.sortType===2?{backgroundColor:"#EAA595", color:"white"}:null}>FOLLOWING</button>
-                                <button onClick={async()=>{
+                                }} style={state.sortType === 2 ? { backgroundColor: "#EAA595", color: "white" } : null}>FOLLOWING</button>
+                                <button onClick={async () => {
                                     dispatch(changeSortType(3))
                                     dispatch(changeFeedMode(3));
-                                    }} style={state.sortType===3?{backgroundColor:"#EAA595", color:"white"}:null}>MY</button>
+                                }} style={state.sortType === 3 ? { backgroundColor: "#EAA595", color: "white" } : null}>MY</button>
                             </div>
                         </div>
 
                         {/* 피드 리스트 */}
-                       
+
                         <div className={`${feedStyle.list}`}>
-                            <FeedSlot/>
+                            <FeedSlot />
                         </div>
-                               
+
 
                     </div>
 
-                    <FeedFollow/>
+                    <FeedFollow />
                 </div>
 
-                <div className={`${feedStyle.footer}`}><Footer/></div>
+                <div className={`${feedStyle.footer}`}><Footer /></div>
 
-                
+
             </div>
 
             {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeCreateModalOpen(false));dispatch(changeDeclarationModalOpen(false));dispatch(changeModifyModalOpen(false))}} style={state.detailModalOpen||state.createModalOpen||state.declarationModalOpen||state.modifyModalOpen?{position:"absolute",top:"0",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", margin:"0%", padding:"0%"}:null}></div>
+            <div onClick={async () => { dispatch(changeDetailModalOpen(false)); dispatch(changeCreateModalOpen(false)); dispatch(changeDeclarationModalOpen(false)); dispatch(changeModifyModalOpen(false)) }} style={state.detailModalOpen || state.createModalOpen || state.declarationModalOpen || state.modifyModalOpen ? { position: "absolute", top: "0", zIndex: "9", width: "100%", height: "10000px", backgroundColor: "black", opacity: "0.6", margin: "0%", padding: "0%" } : null}></div>
         </>
     );
 }

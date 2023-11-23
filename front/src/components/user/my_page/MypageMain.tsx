@@ -11,7 +11,7 @@ import {
   changeFollowMode,
   changeMenuMode,
 } from "../../../store/MypageSlice";
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const MypageMain = () => {
 
@@ -40,7 +40,7 @@ const MypageMain = () => {
   useEffect(
     () => {
       dispatch(action_mypage.getMyFollowerList(loginUser.id));
-    },[])
+    }, [])
 
   useEffect(() => {
     dispatch(action_mypage.getMyFollowingList(loginUser.id));
@@ -59,11 +59,11 @@ const MypageMain = () => {
   }, [])
 
   useEffect(() => {
-      getFeedList(Number(watchingUserId));
+    getFeedList(Number(watchingUserId));
   }, [])
 
   useEffect(() => {
-      getLikeFeedList(Number(watchingUserId));
+    getLikeFeedList(Number(watchingUserId));
   }, [])
 
   useEffect(() => {
@@ -75,8 +75,8 @@ const MypageMain = () => {
   }, [state.myFollwerUsers, state.myFollowingUsers])
 
   useEffect(() => {
-    if(Number(watchingUserId) === 0)
-        return;
+    if (Number(watchingUserId) === 0)
+      return;
 
     dispatch(action_mypage.getBadgeList(Number(watchingUserId)));
   }, [])
@@ -116,7 +116,7 @@ const MypageMain = () => {
       return null;
     });
   };
-  
+
 
 
   return (
@@ -131,7 +131,7 @@ const MypageMain = () => {
           className={`${mypageMainStyle.follower}`}
         >
           <div>팔로워</div>
-            {Number(watchingUserId) === loginUser.id ? <div>{state.myFollowerUsers.length}</div> : <div>{state.yourFollowerUsers.length}</div>}
+          {Number(watchingUserId) === loginUser.id ? <div>{state.myFollowerUsers.length}</div> : <div>{state.yourFollowerUsers.length}</div>}
         </div>
 
         <div
@@ -149,7 +149,7 @@ const MypageMain = () => {
 
         <div
           onClick={() => {
-            dispatch(changeMenuMode(2));dispatch(action_mypage.getFeedList(state.targetUser.id)); dispatch(action_mypage.getLikeFeedList(loginUser.id))
+            dispatch(changeMenuMode(2)); dispatch(action_mypage.getFeedList(state.targetUser.id)); dispatch(action_mypage.getLikeFeedList(loginUser.id))
           }}
           className={`${mypageMainStyle.feed}`}
         >
@@ -187,7 +187,7 @@ const MypageMain = () => {
       <div className={`${mypageMainStyle.badge}`}>
         <div className={`${mypageMainStyle.title}`}>BADGE</div>
         <div className={`${mypageMainStyle.badges}`}>
-            {showBadgeList()}
+          {showBadgeList()}
         </div>
       </div>
     </div>

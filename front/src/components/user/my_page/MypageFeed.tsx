@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import mypageFeedStyle from "./MypageFeed.module.css";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"; 
-import {action_mypage} from "../../../store/MypageSlice";
-import {action_feed, changeDetailModalOpen} from "../../../store/FeedSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { action_mypage } from "../../../store/MypageSlice";
+import { action_feed, changeDetailModalOpen } from "../../../store/FeedSlice";
 
 //컴포넌트
 import MypageFeedMenu from "./MypageFeedMenu";
@@ -17,8 +17,8 @@ import MyFeedSlot from "./MypageFeedSlot";
 const MypageFeed = () => {
 
     //redux 관리
-    let state = useSelector((state:any)=>state.mypage);
-    let state_feed = useSelector((state:any)=>state.feed);
+    let state = useSelector((state: any) => state.mypage);
+    let state_feed = useSelector((state: any) => state.feed);
     let dispatch = useDispatch();
 
     // 페이지네이션, 옷 관리
@@ -31,22 +31,22 @@ const MypageFeed = () => {
     //로그인 유저
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(action_mypage.getFeedList(state.targetUser.id));
         dispatch(action_mypage.getLikeFeedList(state.targetUser.id));
-    },[])
+    }, [])
 
     console.log(state.targetUser.id);
 
-    return(
+    return (
         <div className={`${mypageFeedStyle.total}`}>
             {/* 타이틀 */}
             <div className={`${mypageFeedStyle.title}`}>Feed</div>
 
             {/* 두가지 버튼 : my reaction */}
-            {state.mypageMode===1?<div className={`${mypageFeedStyle.btns}`}>
-                <MypageFeedMenu/>
-            </div>:null}
+            {state.mypageMode === 1 ? <div className={`${mypageFeedStyle.btns}`}>
+                <MypageFeedMenu />
+            </div> : null}
 
 
 
@@ -54,23 +54,23 @@ const MypageFeed = () => {
             {/* 피드 리스트 */}
             <div className={`${mypageFeedStyle.feeds}`}>
                 {
-                    state.feedReadMode===0?
-                    state.feedList?.content.map((oneFeed)=>{
-                        return(
-                            <div>
-                                <MyFeedSlot feedInfo={oneFeed}/>
-                            </div>
+                    state.feedReadMode === 0 ?
+                        state.feedList?.content.map((oneFeed) => {
+                            return (
+                                <div>
+                                    <MyFeedSlot feedInfo={oneFeed} />
+                                </div>
 
-                        );
-                    }):
-                    state.likeFeedList?.content&&state.likeFeedList?.content.map((oneFeed)=>{
-                        return(
-                            <div>
-                                <MyFeedSlot feedInfo={oneFeed}/>
-                            </div>
+                            );
+                        }) :
+                        state.likeFeedList?.content && state.likeFeedList?.content.map((oneFeed) => {
+                            return (
+                                <div>
+                                    <MyFeedSlot feedInfo={oneFeed} />
+                                </div>
 
-                        );
-                    })
+                            );
+                        })
                 }
             </div>
 

@@ -63,21 +63,21 @@ public class ImageService {
     /**
      * remove.bg API 를 이용한 이미지 배경 제거 후 s3 저장
      */
-    public String saveImageAndRemoveBg(MultipartFile multipartFile) throws IOException {
-
-        if (multipartFile.isEmpty()) {
-            throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
-        }
-
-        // 이미지 배경 제거
-        byte[] resultImageBytes = removeImageBackground(multipartFile);
-
-        // S3에 업로드
-        String fileName = generateFileName(multipartFile);
-        String imagePath = uploadToS3(fileName, resultImageBytes, multipartFile.getContentType());
-
-        return imagePath;
-    }
+//    public String saveImageAndRemoveBg(MultipartFile multipartFile) throws IOException {
+//
+//        if (multipartFile.isEmpty()) {
+//            throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
+//        }
+//
+//        // 이미지 배경 제거
+//        byte[] resultImageBytes = removeImageBackground(multipartFile);
+//
+//        // S3에 업로드
+//        String fileName = generateFileName(multipartFile);
+//        String imagePath = uploadToS3(fileName, resultImageBytes, multipartFile.getContentType());
+//
+//        return imagePath;
+//    }
 
     /**
      * 이미지 배경 제거 메서드
@@ -177,47 +177,47 @@ public class ImageService {
     /**
      * 파이썬을 이용한 rembg(오픈소스 라이브러리)
      */
-//    public String saveImageAndRemoveBg(MultipartFile multipartFile) throws IOException {
-//
-//        if(multipartFile.isEmpty()) {
-//            throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
-//        }
-//
-//        String originalName = multipartFile.getOriginalFilename(); // 파일 이름
-//
-//        // 파일명 중복을 피하기위해 날짜 추가
-//        String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("-yyyyMMdd-HHmmss"));
-//        String fileName = originalName + formatDate;
-//
-//        long size = multipartFile.getSize(); // 파일 크기
-//
-//        ObjectMetadata objectMetaData = new ObjectMetadata();
-//        objectMetaData.setContentType(multipartFile.getContentType());
-//        objectMetaData.setContentLength(size);
-//
-//        try {
-//            // S3에 업로드
-//            amazonS3Client.putObject(
-//                    new PutObjectRequest(S3Bucket, fileName, multipartFile.getInputStream(), objectMetaData)
-//                            .withCannedAcl(CannedAccessControlList.PublicRead)
-//            );
-//        } catch (AmazonClientException e) {
-//            throw new RuntimeException("S3에 이미지를 업로드하는데 실패했습니다.", e);
-//        }
-//
-//        String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString(); // 접근가능한 URL 가져오기
-//
-//        if(imagePath == null) {
-//            throw new IllegalArgumentException("이미지 경로를 가져오지 못하였습니다.");
-//        }
-//
-//        // 배경제거를 완료하면
-//        String processedImagePath = processImageAndReturnPath(imagePath);
-//        // 배경되기전 url은 삭제한다.
-//        deleteImage(imagePath);
-//
-//        return processedImagePath;
-//    }
+    public String saveImageAndRemoveBg(MultipartFile multipartFile) throws IOException {
+
+        if(multipartFile.isEmpty()) {
+            throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
+        }
+
+        String originalName = multipartFile.getOriginalFilename(); // 파일 이름
+
+        // 파일명 중복을 피하기위해 날짜 추가
+        String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("-yyyyMMdd-HHmmss"));
+        String fileName = originalName + formatDate;
+
+        long size = multipartFile.getSize(); // 파일 크기
+
+        ObjectMetadata objectMetaData = new ObjectMetadata();
+        objectMetaData.setContentType(multipartFile.getContentType());
+        objectMetaData.setContentLength(size);
+
+        try {
+            // S3에 업로드
+            amazonS3Client.putObject(
+                    new PutObjectRequest(S3Bucket, fileName, multipartFile.getInputStream(), objectMetaData)
+                            .withCannedAcl(CannedAccessControlList.PublicRead)
+            );
+        } catch (AmazonClientException e) {
+            throw new RuntimeException("S3에 이미지를 업로드하는데 실패했습니다.", e);
+        }
+
+        String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString(); // 접근가능한 URL 가져오기
+
+        if(imagePath == null) {
+            throw new IllegalArgumentException("이미지 경로를 가져오지 못하였습니다.");
+        }
+
+        // 배경제거를 완료하면
+        String processedImagePath = processImageAndReturnPath(imagePath);
+        // 배경되기전 url은 삭제한다.
+        deleteImage(imagePath);
+
+        return processedImagePath;
+    }
 
     public String processImageAndReturnPath(String imagePath) throws IOException {
 
