@@ -18,7 +18,7 @@ import {
 import { useParams } from "react-router-dom";
 
 //api
-import {ifBlackList} from "../../../hook/UserApi"
+import { ifBlackList } from "../../../hook/UserApi"
 
 // alert창
 import Swal from "sweetalert2";
@@ -29,18 +29,19 @@ const MypageHeader = () => {
   //redux 관리
   let state = useSelector((state: any) => state.mypage);
   let dispatch = useDispatch();
-  
-  
+
+
   const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   const { watchingUserId } = useParams();
-  
+
   let getBlackList = (watchingUserId: number) => {
     dispatch(action_mypage.getBlackList(watchingUserId));
   };
   dispatch(action_mypage.checkBlackList({
-    id1 : loginUser.id, 
-    id2 : watchingUserId}
-    ));
+    id1: loginUser.id,
+    id2: watchingUserId
+  }
+  ));
 
   const [followingData, setFollowingData] = useState({
     id: 0,
@@ -48,7 +49,7 @@ const MypageHeader = () => {
     nickname: "",
     profileImg: "",
     gender: "",
-    showBadgeType : ""
+    showBadgeType: ""
   });
 
   const changeFollowingData = () => {
@@ -132,57 +133,57 @@ const MypageHeader = () => {
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
 
-   
+
 
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
-  
+
       };
       reader.readAsDataURL(e.target.files[0]);
 
       Swal.fire({
-      icon: "question",
-      title: "수정",
-      text: `프로필 이미지를 수정하시겠습니까??`,
-      showCancelButton: true,
-      confirmButtonText: "수정",
-      cancelButtonText: "취소",
-      confirmButtonColor:'#EAA595',
-      customClass: {
+        icon: "question",
+        title: "수정",
+        text: `프로필 이미지를 수정하시겠습니까??`,
+        showCancelButton: true,
+        confirmButtonText: "수정",
+        cancelButtonText: "취소",
+        confirmButtonColor: '#EAA595',
+        customClass: {
           confirmButton: mypageHeaderStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
           cancelButton: mypageHeaderStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
         }
-  }).then((res) => {
-      if (res.isConfirmed) {
+      }).then((res) => {
+        if (res.isConfirmed) {
 
-        // const id = loginUser.id;
-        const userUpdateProfileImgDto = {
-          "imageUrl":String(loginUser.profileImg)
+          // const id = loginUser.id;
+          const userUpdateProfileImgDto = {
+            "imageUrl": String(loginUser.profileImg)
+          }
+
+          const formdata = new FormData();
+          formdata.append("s3upload", e.target.files[0]);
+          formdata.append("userUpdateProfileImgDto", new Blob([JSON.stringify(userUpdateProfileImgDto)], { type: "application/json" }));
+
+          dispatch(action_mypage.profileUpdate(formdata));
+
         }
+        else {
 
-        const formdata = new FormData();
-        formdata.append("s3upload", e.target.files[0]);
-        formdata.append("userUpdateProfileImgDto", new Blob([JSON.stringify(userUpdateProfileImgDto)],{type: "application/json"}));
-        
-        dispatch(action_mypage.profileUpdate(formdata));
-
-      }
-      else{
-          
-      }
-  });
+        }
+      });
 
 
 
-      
+
     } else {
       setImage(state.targetUser.profileImg);
 
     }
   };
 
- 
+
 
   useEffect(() => {
     dispatch(action_mypage.getShowBadge(Number(watchingUserId)));
@@ -261,26 +262,26 @@ const MypageHeader = () => {
       checkFollowing();
       checkBlackList();
 
-      
+
     },
     [state.blackListUsers, state.myFollowingUsers]
   );
 
   // 성별
-  function genderColor(gender){
+  function genderColor(gender) {
 
 
-    if(gender==="FEMALE"){
-        return `${mypageHeaderStyle.profileImgF}`
-    }else{
-        return `${mypageHeaderStyle.profileImgM}`
+    if (gender === "FEMALE") {
+      return `${mypageHeaderStyle.profileImgF}`
+    } else {
+      return `${mypageHeaderStyle.profileImgM}`
     }
 
   }
 
 
   // 프로필 이미지 수정
-  function updateProfileImg(){
+  function updateProfileImg() {
 
     Swal.fire({
       icon: "question",
@@ -289,35 +290,37 @@ const MypageHeader = () => {
       showCancelButton: true,
       confirmButtonText: "수정",
       cancelButtonText: "취소",
-      confirmButtonColor:'#EAA595',
+      confirmButtonColor: '#EAA595',
       customClass: {
-          confirmButton: mypageHeaderStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
-          cancelButton: mypageHeaderStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
-        }
-  }).then((res) => {
+        confirmButton: mypageHeaderStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+        cancelButton: mypageHeaderStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+      }
+    }).then((res) => {
       if (res.isConfirmed) {
 
         // const id = loginUser.id;
         const userUpdateProfileImgDto = {
-          "imageUrl":String(loginUser.profileImg)
+          "imageUrl": String(loginUser.profileImg)
         }
 
         const formdata = new FormData();
         formdata.append("s3upload", File);
-        formdata.append("userUpdateProfileImgDto", new Blob([JSON.stringify(userUpdateProfileImgDto)],{type: "application/json"}));
-        
+        formdata.append("userUpdateProfileImgDto", new Blob([JSON.stringify(userUpdateProfileImgDto)], { type: "application/json" }));
+
         dispatch(action_mypage.profileUpdate(formdata));
 
       }
-      else{
-          
+      else {
+
       }
-  });
+    });
 
   }
 
+  //유저 아이디가 바뀔 때마다 유저 정보 새로 가져오기
 
-  
+
+
   return (
     <div className={`${mypageHeaderStyle.total}`}>
 
@@ -325,51 +328,52 @@ const MypageHeader = () => {
       <div className={`${mypageHeaderStyle.title}`}>MYPAGE</div>
 
       {/* 프로필 사진 & 뱃지 사진 & 닉네임 */}
-  
+
       <div className={`${mypageHeaderStyle.userInfo}`}>
         <div>
-          {loginUser.id===Number(watchingUserId)?
-          <div className={`${genderColor(state.targetUser.gender)}`}>
-          {/* <div className={`${mypageHeaderStyle.profile}`}> */}
-            <img src={Image} onClick={()=>{fileInput.current.click()}} />
-            <input type='file' style={{display:'none'}} accept='image/jpg,image/png,image/jpeg' name='profile_img'
-              onChange={(e)=>{onChange(e);}} ref={fileInput}/>
-          </div>
-          :
-          <div className={`${genderColor(state.targetUser.gender)}`}>
-          {/* <div className={`${mypageHeaderStyle.profile}`}> */}
-            <img src={Image} />
-          </div>}
+          {loginUser.id === Number(watchingUserId) ?
+            <div className={`${genderColor(state.targetUser.gender)}`}>
+              {/* <div className={`${mypageHeaderStyle.profile}`}> */}
+              <img src={state.targetUser.profileImg} onClick={() => { fileInput.current.click() }} />
+              <input type='file' style={{ display: 'none' }} accept='image/jpg,image/png,image/jpeg' name='profile_img'
+                onChange={(e) => { onChange(e); }} ref={fileInput} />
+            </div>
+            :
+            <div className={`${genderColor(state.targetUser.gender)}`}>
+              {/* <div className={`${mypageHeaderStyle.profile}`}> */}
+              <img src={state.targetUser.profileImg
+              } />
+            </div>}
 
-          {/* 뱃지 */}  
+          {/* 뱃지 */}
           <div className={`${mypageHeaderStyle.profile_badge}`}>
-            {state.showBadge==="X" && loginUser.id === Number(watchingUserId)?<div onClick={()=>{
+            {state.showBadge === "X" && loginUser.id === Number(watchingUserId) ? <div onClick={() => {
               dispatch(changeBadgeUpdateModalOpen(true))
-            }} className={`${mypageHeaderStyle.noBadge}`}></div>:null}
+            }} className={`${mypageHeaderStyle.noBadge}`}></div> : null}
 
-            {state.showBadge==="LOVELY"?<img onClick={()=>{
-              if(loginUser.id === Number(watchingUserId)) {
+            {state.showBadge === "LOVELY" ? <img onClick={() => {
+              if (loginUser.id === Number(watchingUserId)) {
                 dispatch(changeBadgeUpdateModalOpen(true))
               }
-            }} src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />:null}
+            }} src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} /> : null}
 
-            {state.showBadge==="NATURAL"?<img onClick={()=>{
-              if(loginUser.id === Number(watchingUserId)) {
+            {state.showBadge === "NATURAL" ? <img onClick={() => {
+              if (loginUser.id === Number(watchingUserId)) {
                 dispatch(changeBadgeUpdateModalOpen(true))
               }
-            }} src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />:null}
+            }} src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} /> : null}
 
-            {state.showBadge==="MODERN"?<img onClick={()=>{
-              if(loginUser.id === Number(watchingUserId)) {
+            {state.showBadge === "MODERN" ? <img onClick={() => {
+              if (loginUser.id === Number(watchingUserId)) {
                 dispatch(changeBadgeUpdateModalOpen(true))
               }
-            }} src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`}/>:null}
+            }} src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`} /> : null}
 
-            {state.showBadge==="SEXY"?<img onClick={()=>{
-              if(loginUser.id === Number(watchingUserId)) {
+            {state.showBadge === "SEXY" ? <img onClick={() => {
+              if (loginUser.id === Number(watchingUserId)) {
                 dispatch(changeBadgeUpdateModalOpen(true))
               }
-            }} src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`}/>:null}
+            }} src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`} /> : null}
 
           </div>
         </div>
@@ -382,103 +386,105 @@ const MypageHeader = () => {
       {/* 버튼 2~3개 */}
       {state.mypageMode === 2
         ? <div className={`${mypageHeaderStyle.btns}`}>
-            <button
-              onClick={() => {
-                dispatch(changeManageType(1));
-                dispatch(changeMenuMode(1));
-              }}
-            >
-              기본정보
-            </button>
-            <button>팔로우</button>
-            <button>대화</button>
-            <button
-                  onClick={() => { state.isBlacklist?
-                    alert("접근할 수 없습니다."):
-                    window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`
-                    
-                  }}
-                >
-                  옷장 보기 
-                </button>
-          </div>
-        : <div className={`${mypageHeaderStyle.btns}`}>
-            <button
-              onClick={() => {
-                dispatch(changeManageType(1));
-                dispatch(changeMenuMode(1));
-              }}
-            >
-              기본정보
-            </button>
-            {loginUser.id === Number(watchingUserId)
-              ? <button
-                  onClick={() => {
-                    dispatch(changeManageType(2));
-                    dispatch(changeMenuMode(3));
-                  }}
-                  style={
-                    state.menuMode === 3
-                      ? { backgroundColor: "#EAA595", color: "white" }
-                      : null
-                  }
-                >
-                  내 정보 관리
-                </button>
-              : checkFollowing()
-                ? <button
-                    onClick={() => {
-                      changeDeleteFollowingData();
-                      dispatch(action_mypage.getPerfectFollowList());
-                    }}
-                  >
-                    팔로잉 취소
-                  </button>
-                : <button
-                    onClick={() => {
-                      changeFollowingData();
-                      dispatch(action_mypage.getPerfectFollowList());
-                    }}
-                  >
-                    팔로잉하기
-                  </button>}
-            {loginUser.id === Number(watchingUserId)
-              ? <button
-                  onClick={() => {
-                    dispatch(changeFollowMode(3));
-                    dispatch(changeFollowModalOpen(true));
-                    dispatch(changeFollowModalMode(3));
-                  }}
-                >
-                  블랙리스트 관리
-                </button>
-              : checkBlackList()
-                ? <button
-                    onClick={() => {
-                      changeDeleteBlackListData();
-                      dispatch(action_mypage.getBlackList(loginUser.id));
-                    }}
-                  >
-                    블랙리스트 취소
-                  </button>
-                : <button
-                    onClick={() => {
-                      changeAddBlackListData();
-                      dispatch(action_mypage.getBlackList(loginUser.id));
-                    }}
-                  >
-                    블랙리스트 등록
-                  </button>}
-                  <button
-                  onClick={() => {state.isBlacklist?alert("접근할 수 없습니다."):
-                    window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`
-                    
-                  }}
-                >
-                  옷장 보기 
-                </button>
+          <button
+            onClick={() => {
+              dispatch(changeManageType(1));
+              dispatch(changeMenuMode(1));
+            }}
+          >
+            기본정보
+          </button>
+          <button>팔로우</button>
+          <button>대화</button>
+          <button
+            onClick={() => {
+              state.isBlacklist ?
+              alert("접근할 수 없습니다.") :
+              window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`
 
-          </div>}
+            }}
+          >
+            옷장 보기
+          </button>
+        </div>
+        : <div className={`${mypageHeaderStyle.btns}`}>
+          <button
+            onClick={() => {
+              dispatch(changeManageType(1));
+              dispatch(changeMenuMode(1));
+            }}
+          >
+            기본정보
+          </button>
+          {loginUser.id === Number(watchingUserId)
+            ? <button
+              onClick={() => {
+                dispatch(changeManageType(2));
+                dispatch(changeMenuMode(3));
+              }}
+              style={
+                state.menuMode === 3
+                  ? { backgroundColor: "#EAA595", color: "white" }
+                  : null
+              }
+            >
+              내 정보 관리
+            </button>
+            : checkFollowing()
+              ? <button
+                onClick={() => {
+                  changeDeleteFollowingData();
+                  dispatch(action_mypage.getPerfectFollowList());
+                }}
+              >
+                팔로잉 취소
+              </button>
+              : <button
+                onClick={() => {
+                  changeFollowingData();
+                  dispatch(action_mypage.getPerfectFollowList());
+                }}
+              >
+                팔로잉하기
+              </button>}
+          {loginUser.id === Number(watchingUserId)
+            ? <button
+              onClick={() => {
+                dispatch(changeFollowMode(3));
+                dispatch(changeFollowModalOpen(true));
+                dispatch(changeFollowModalMode(3));
+              }}
+            >
+              블랙리스트 관리
+            </button>
+            : checkBlackList()
+              ? <button
+                onClick={() => {
+                  changeDeleteBlackListData();
+                  dispatch(action_mypage.getBlackList(loginUser.id));
+                }}
+              >
+                블랙리스트 취소
+              </button>
+              : <button
+                onClick={() => {
+                  changeAddBlackListData();
+                  dispatch(action_mypage.getBlackList(loginUser.id));
+                }}
+              >
+                블랙리스트 등록
+              </button>}
+          <button
+            onClick={() => {
+              state.isBlacklist ? alert("접근할 수 없습니다.") :
+              window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`
+
+            }}
+          >
+            옷장 보기
+          </button>
+
+        </div>}
     </div>
   );
 };

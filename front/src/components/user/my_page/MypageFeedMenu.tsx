@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import mypageFeedMenuStyle from './MypageFeedMenu.module.css';
 
 //redux
-import { useSelector, useDispatch } from "react-redux"; 
-import {action_mypage,changeFeedReadMode} from "../../../store/MypageSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { action_mypage, changeFeedReadMode } from "../../../store/MypageSlice";
 
 //changeFeedReadMode
 
 const NavigationBar: React.FC = () => {
 
   //redux 관리
-  let state = useSelector((state:any)=>state.mypage);
+  let state = useSelector((state: any) => state.mypage);
   let dispatch = useDispatch();
 
   //로그인 유저
@@ -31,7 +31,7 @@ const NavigationBar: React.FC = () => {
     <div className={`${mypageFeedMenuStyle.navbarContainer}`}>
       <div className={`${mypageFeedMenuStyle.navbar}`}>
         {menuItems.map((menuItem, index) => (
-          <button key={index} onClick={() => {handleMenuClick(index); dispatch(changeFeedReadMode(index)); dispatch(action_mypage.getFeedList(loginUser.id)); dispatch(action_mypage.getLikeFeedList(loginUser.id))}}>
+          <button key={index} onClick={() => { handleMenuClick(index); dispatch(changeFeedReadMode(index)); dispatch(action_mypage.getFeedList(state.targetUser.id)); dispatch(action_mypage.getLikeFeedList(state.targetUser.id)) }}>
             {menuItem}
           </button>
         ))}
@@ -44,7 +44,7 @@ const NavigationBar: React.FC = () => {
         > {activeMenu !== null && <h2>{menuItems[activeMenu]}</h2>} </div>
       </div>
 
-      
+
     </div>
   );
 };
